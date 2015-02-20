@@ -1,3 +1,9 @@
+<% if @person.errors.present? %>
+  <% @person.errors.full_messages.each do |msg| %>
+    <%= msg %>
+  <% end %>
+<% end %>
+
 <div class="page-header">
   <h1>Edit Staff Member</h1>
 </div>
