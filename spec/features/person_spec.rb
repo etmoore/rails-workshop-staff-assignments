@@ -119,5 +119,37 @@ feature 'Person' do
 
   end
 
+  scenario "Users can assign people to locations" do
+    create_user email: "user@example.com"
+    person = create_person
+    location = create_location name: "Northwest"
+
+    visit root_path
+    click_on "Login"
+
+    fill_in "Email", with: "user@example.com"
+    fill_in "Password", with: "password"
+    click_on "Login"
+
+    click_on person.full_name
+
+    click_on "+ Add Location"
+
+    expect(page).to have_content('Assign #{person.full_name} to a location')
+    select "Northwest", from: "assignment_location"
+
+    fill_in "Role", with: "Boss Man"
+    click_on 'Assign'
+
+    within '.page-header' do
+      expect(page).to have_content(Person.full_name)
+    end
+
+    within '.table' do
+      expect(page).to have_content("Northwest")
+      expect(page).to have_content("Boss Man")
+    end
+
+  end
 
 end
